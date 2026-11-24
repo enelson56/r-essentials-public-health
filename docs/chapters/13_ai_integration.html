@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>13&nbsp; AI Integration: Prompting, Skills, and Responsible Use – **R Essentials for Public Health**</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/14_epi_curves.html" rel="next">
+<link href="../chapters/12_saving_plots.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-5630e6732664d48c7cde3b526013eeb9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles/custom.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/09_summary_tables.html"><strong>Part III: Data Visualization</strong></a></li><li class="breadcrumb-item"><a href="../chapters/13_ai_integration.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">AI Integration: Prompting, Skills, and Responsible Use</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../"><strong>R Essentials for Public Health</strong></a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><strong>Welcome to R Essentials for Public Health!</strong></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>Part I: Getting Started</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01_getting_started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting Started with R and RStudio</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Workflow &amp; R Projects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03_terminology.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Basic R Terminology</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04_packages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">R Packages</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>Part II: Data Management</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05_importing_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Importing Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06_tidyverse_management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Tidyverse Data Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07_tidyverse_recoding_variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Factors: Recoding Variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08_missing_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Missing Data in R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>Part III: Data Visualization</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/09_summary_tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Summary Tables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/10_ggplot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Plotting in R: ggplot2 Package</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/11_likert_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Likert Plots in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/12_saving_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Saving Plots &amp; Images</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/13_ai_integration.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">AI Integration: Prompting, Skills, and Responsible Use</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>Part IV: Epidemiology Topics</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/14_epi_curves.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Epidemic Curves and Confidence Intervals</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/15_2x2_tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">2×2 Tables and Measures of Association</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/16_linear_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Introduction to Linear Regression in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/17_logistic_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Introduction to Logistic Regression in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/18_making_maps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Mapping Public Health Data in R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
+ <span class="menu-text">Practice Solutions</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03_terminology_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Chapter 6 Solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04_packages_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Chapter 7 Solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05_importing_data_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Chapter 8 Solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06_tidyverse_management_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Chapter 9 Solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07_tidyverse_recoding_variables_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Chapter 10 Solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/14_epi_curves_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Chapter 17 Solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/15_2x2_tables_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Chapter 18 Solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/16_linear_regression_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Chapter 16 Solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/17_logistic_regression_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Chapter 17 Solutions</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction-and-responsible-stewardship" id="toc-introduction-and-responsible-stewardship" class="nav-link active" data-scroll-target="#introduction-and-responsible-stewardship"><span class="header-section-number">13.1</span> Introduction and Responsible Stewardship</a>
+  <ul class="collapse">
+  <li><a href="#keep-your-eyes-open" id="toc-keep-your-eyes-open" class="nav-link" data-scroll-target="#keep-your-eyes-open"><span class="header-section-number">13.1.1</span> Keep Your Eyes Open</a></li>
+  </ul></li>
+  <li><a href="#github-copilot-in-rstudio" id="toc-github-copilot-in-rstudio" class="nav-link" data-scroll-target="#github-copilot-in-rstudio"><span class="header-section-number">13.2</span> GitHub Copilot in RStudio</a>
+  <ul class="collapse">
+  <li><a href="#copilot-in-action" id="toc-copilot-in-action" class="nav-link" data-scroll-target="#copilot-in-action"><span class="header-section-number">13.2.1</span> Copilot in Action</a></li>
+  </ul></li>
+  <li><a href="#learn-to-prompt-effectively" id="toc-learn-to-prompt-effectively" class="nav-link" data-scroll-target="#learn-to-prompt-effectively"><span class="header-section-number">13.3</span> Learn to prompt effectively</a>
+  <ul class="collapse">
+  <li><a href="#the-clear-framework" id="toc-the-clear-framework" class="nav-link" data-scroll-target="#the-clear-framework"><span class="header-section-number">13.3.1</span> The CLEAR framework</a></li>
+  <li><a href="#compare-two-prompts" id="toc-compare-two-prompts" class="nav-link" data-scroll-target="#compare-two-prompts"><span class="header-section-number">13.3.2</span> Compare two prompts</a></li>
+  <li><a href="#practice-improve-a-prompt" id="toc-practice-improve-a-prompt" class="nav-link" data-scroll-target="#practice-improve-a-prompt"><span class="header-section-number">13.3.3</span> Practice: improve a prompt</a></li>
+  </ul></li>
+  <li><a href="#train-your-ai-turn-repeated-prompts-into-a-skill" id="toc-train-your-ai-turn-repeated-prompts-into-a-skill" class="nav-link" data-scroll-target="#train-your-ai-turn-repeated-prompts-into-a-skill"><span class="header-section-number">13.4</span> Train Your AI: Turn repeated prompts into a Skill</a>
+  <ul class="collapse">
+  <li><a href="#example-a-public-health-data-visualization-skill" id="toc-example-a-public-health-data-visualization-skill" class="nav-link" data-scroll-target="#example-a-public-health-data-visualization-skill"><span class="header-section-number">13.4.1</span> Example: a Public Health Data Visualization Skill</a></li>
+  <li><a href="#a-prompt-students-can-copy" id="toc-a-prompt-students-can-copy" class="nav-link" data-scroll-target="#a-prompt-students-can-copy"><span class="header-section-number">13.4.2</span> A prompt students can copy</a></li>
+  <li><a href="#what-makes-a-skill-useful" id="toc-what-makes-a-skill-useful" class="nav-link" data-scroll-target="#what-makes-a-skill-useful"><span class="header-section-number">13.4.3</span> What makes a Skill useful?</a></li>
+  </ul></li>
+  <li><a href="#always-verify-what-ai-produces" id="toc-always-verify-what-ai-produces" class="nav-link" data-scroll-target="#always-verify-what-ai-produces"><span class="header-section-number">13.5</span> ALWAYS Verify what AI produces</a>
+  <ul class="collapse">
+  <li><a href="#a-short-r-verification-exercise" id="toc-a-short-r-verification-exercise" class="nav-link" data-scroll-target="#a-short-r-verification-exercise"><span class="header-section-number">13.5.1</span> A short R verification exercise</a></li>
+  </ul></li>
+  <li><a href="#disclose-ai-use-transparently" id="toc-disclose-ai-use-transparently" class="nav-link" data-scroll-target="#disclose-ai-use-transparently"><span class="header-section-number">13.6</span> Disclose AI use transparently</a>
+  <ul class="collapse">
+  <li><a href="#a-practical-disclosure-template" id="toc-a-practical-disclosure-template" class="nav-link" data-scroll-target="#a-practical-disclosure-template"><span class="header-section-number">13.6.1</span> A practical disclosure template</a></li>
+  <li><a href="#different-levels-of-ai-involvement" id="toc-different-levels-of-ai-involvement" class="nav-link" data-scroll-target="#different-levels-of-ai-involvement"><span class="header-section-number">13.6.2</span> Different levels of AI involvement</a></li>
+  </ul></li>
+  <li><a href="#before-you-submit-an-ai-assisted-assignment" id="toc-before-you-submit-an-ai-assisted-assignment" class="nav-link" data-scroll-target="#before-you-submit-an-ai-assisted-assignment"><span class="header-section-number">13.7</span> Before you submit an AI-assisted assignment</a></li>
+  <li><a href="#what-do-you-think" id="toc-what-do-you-think" class="nav-link" data-scroll-target="#what-do-you-think"><span class="header-section-number">13.8</span> What do you think?</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/09_summary_tables.html"><strong>Part III: Data Visualization</strong></a></li><li class="breadcrumb-item"><a href="../chapters/13_ai_integration.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">AI Integration: Prompting, Skills, and Responsible Use</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">AI Integration: Prompting, Skills, and Responsible Use</span></h1>
+<p class="subtitle lead">AI Literacy is Responsible Stewardship</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="hero">
+<div class="kicker">
+<p>PROMPTING · AI SKILLS · VERIFICATION</p>
+</div>
+<div class="hero-heading">
+<p>Work Smarter, Stay Curious</p>
+</div>
+<p>
+AI tools can help you learn, code, and communicate, but their output still needs careful review. Explore effective prompting, reusable skills, and practical habits for checking and disclosing AI-assisted work.
+</p>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Learning objectives">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Learning objectives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>By the end of this lesson, you should be able to:</p>
+<ol type="1">
+<li>Explain the opportunities and limitations of AI tools</li>
+<li>Use Copilot suggestions critically in RStudio</li>
+<li>Write and refine structured prompts</li>
+<li>Create and test a reusable AI Skill</li>
+<li>Verify AI-assisted R code and claims</li>
+<li>Disclose AI contributions appropriately</li>
+</ol>
+</div>
+</div>
+<section id="introduction-and-responsible-stewardship" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="introduction-and-responsible-stewardship"><span class="header-section-number">13.1</span> Introduction and Responsible Stewardship</h2>
+<p>Artificial Intelligence (AI) is not something that we should fear. We should embrace the power of AI to help us be more productive, creative, and efficient. In this document, I will demonstrate how AI can assist in generating R code, writing explanations, and providing insights. I will refer you to the <a href="https://gradstudies.byu.edu/about/statement-on-use-of-ai">BYU AI Policy</a> and <a href="https://www.unesco.org/en/artificial-intelligence/recommendation-ethics">UNESCO’s AI Recommendations</a> for further reading.</p>
+<section id="keep-your-eyes-open" class="level3" data-number="13.1.1">
+<h3 data-number="13.1.1" class="anchored" data-anchor-id="keep-your-eyes-open"><span class="header-section-number">13.1.1</span> Keep Your Eyes Open</h3>
+<p>Before walking down this path, it is important to recall that we believe in prophetic leadership. As such, we should exercise caution in how we use AI. We are meant to be different in every aspect of our lives, and that includes how we use technology.</p>
+<p><strong>Elder David A. Bednar</strong>, of the Quorum of the Twelve Apostles, <a href="https://speeches.byu.edu/talks/david-a-bednar/consider-the-wondrous-works-of-god/">said this</a> on BYU campus in January 2024:</p>
+<p><img src="images/bednar.jpg" class="img-fluid" style="float: right; margin: 12px 0 15px 22px;;width:43.0%"></p>
+<p><em>“As you strive to learn the gospel of Jesus Christ and perform the work you have to do, I specifically exhort you to be wise in your use of contemporary technological tools. Innovations such as artificial intelligence [can] both (1) assist you in receiving magnificent blessings and (2) diminish and suffocate your moral agency. Please do not allow the supposed accuracy, speed, and ease of modern technologies to entice you to avoid or circumvent the righteous work that invites into your life the blessings you will need. My beloved brothers and sisters, there are no spiritual shortcuts or quick fixes.”</em></p>
+<p><img src="images/cook.jpg" class="img-fluid" style="float: left; margin: 12px 22px 15px 0;;width:45.0%"></p>
+<p><br></p>
+<p><strong>Elder Quentin L. Cook</strong> of the quorum of the Twelve Apostles, also addressed BYU campus in <a href="https://speeches.byu.edu/talks/quentin-l-cook/faith-in-jesus-christ-in-the-information-age/">March 2026</a> discussing our stewardship with AI.</p>
+<div style="clear:both;">
+
+</div>
+</section>
+</section>
+<section id="github-copilot-in-rstudio" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="github-copilot-in-rstudio"><span class="header-section-number">13.2</span> GitHub Copilot in RStudio</h2>
+<p><img src="images/easy_button.jpg" class="img-fluid" style="float: right; margin: 15px 0 15px 25px;;width:35.0%"></p>
+<p>GitHub is a web-based platform used for version control and collaborative software development. It allows developers to host and review code, manage projects, and collaborate with others. GitHub uses Git, a distributed version control system, to track changes in code and facilitate collaboration among multiple contributors.</p>
+<p>One of the awesome tools that has been produced is GitHub Copilot integration into <code>RStudio</code>. GitHub Copilot is an AI-powered code completion tool that suggests code snippets and functions as you type, helping to speed up the coding process and improve productivity. You can get more details <a href="https://docs.posit.co/ide/user/ide/guide/tools/copilot.html">here</a></p>
+<p><br></p>
+<p><strong>Let’s get you set up to use GitHub Copilot in RStudio:</strong></p>
+<ol type="1">
+<li>Create a GitHub account. You can do this <a href="https://github.com/">here</a></li>
+</ol>
+<ul>
+<li>Check current GitHub student eligibility and Copilot plan terms; free access and eligibility can change.</li>
+<li>You will need to verify your email address</li>
+</ul>
+<ol start="2" type="1">
+<li>Turn on the Copilot feature within <code>RStudio</code>. To do this, go to the Tools Menu &gt; Global Options &gt; GitHub Copilot. Sign in to your GitHub account and enable the Copilot feature.</li>
+</ol>
+<p><br></p>
+<p><strong>Figure 1. Tools &gt; Global Options menu in RStudio</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/copilot_login.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p><br></p>
+<p><strong>Figure 2. The GitHub Log In Process</strong></p>
+<p>Here is an example GitHub Copilot login process after clicking the “Sign in to GitHub” button:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/copilot_verification.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<section id="copilot-in-action" class="level3" data-number="13.2.1">
+<h3 data-number="13.2.1" class="anchored" data-anchor-id="copilot-in-action"><span class="header-section-number">13.2.1</span> Copilot in Action</h3>
+<p>You can check to see if Copilot is active by looking at the lower right-hand corner of your <code>R Script</code>. You will see messages from <code>Copilot</code> such as “Waiting for completions…” or “Copilot is ready”.</p>
+<p>Then just start coding and Copilot will start to try to help you. For example, in the figure below, I started a new <code>R Script</code> and then asked <code>Copilot</code> to help me make a bar graph. Its suggestion is seen in the gray, italicized text. To accept the suggestions, you can just hit the <code>Tab</code> key.</p>
+<p><br></p>
+<p><strong>Figure 3. GitHub Copilot Suggesting R Code</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/copilot_example.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="A note about the screenshots">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>A note about the screenshots
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Copilot screenshots show one version of RStudio and the GitHub sign-in process. Your menus and authentication screens may look different. Follow the current instructions in the <a href="https://docs.posit.co/ide/user/ide/guide/tools/copilot.html">Posit documentation</a> if these screenshots are outdated (I do my best!).</p>
+</div>
+</div>
+</section>
+</section>
+<section id="learn-to-prompt-effectively" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="learn-to-prompt-effectively"><span class="header-section-number">13.3</span> Learn to prompt effectively</h2>
+<p>A <em>prompt</em> is the instruction or question you give an AI assistant. A strong prompt tells the assistant what you are doing, what you want, and how to help.</p>
+<section id="the-clear-framework" class="level3" data-number="13.3.1">
+<h3 data-number="13.3.1" class="anchored" data-anchor-id="the-clear-framework"><span class="header-section-number">13.3.1</span> The CLEAR framework</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 38%">
+<col style="width: 30%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Letter</th>
+<th>Meaning</th>
+<th>Ask yourself…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>C</strong></td>
+<td><strong>Context</strong></td>
+<td>What background information does the AI need?</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>L</strong></td>
+<td><strong>Learning goal</strong></td>
+<td>What am I trying to accomplish or understand?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>E</strong></td>
+<td><strong>Expectations</strong></td>
+<td>What format, constraints, and level of detail do I want?</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>A</strong></td>
+<td><strong>Audience</strong></td>
+<td>Who is the output for?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>R</strong></td>
+<td><strong>Refinement</strong></td>
+<td>How will I critique, test, and improve the response?</td>
+</tr>
+</tbody>
+</table>
+<p><em>CLEAR is a classroom mnemonic for this lesson, not a required industry standard.</em></p>
+</section>
+<section id="compare-two-prompts" class="level3" data-number="13.3.2">
+<h3 data-number="13.3.2" class="anchored" data-anchor-id="compare-two-prompts"><span class="header-section-number">13.3.2</span> Compare two prompts</h3>
+<div class="prompt-bad">
+<p><strong>Weak prompt</strong><br> “Make me a graph in R.”</p>
+</div>
+<div class="prompt-good">
+<p><strong>Stronger prompt</strong><br> “I am an undergraduate public health student learning ggplot2. I have a dataset with life expectancy, GDP per capita, and continent. Help me make a readable scatterplot using tidyverse syntax and <code>theme_classic(base_size = 15)</code>. Use accessible colors, explain unfamiliar commands, and ask a question before making a major assumption. I need to present this graph to classmates.”</p>
+</div>
+<p>The second prompt gives the AI a clearer task and a way to judge success. It also asks the AI to support learning rather than just produce code.</p>
+</section>
+<section id="practice-improve-a-prompt" class="level3" data-number="13.3.3">
+<h3 data-number="13.3.3" class="anchored" data-anchor-id="practice-improve-a-prompt"><span class="header-section-number">13.3.3</span> Practice: improve a prompt</h3>
+<div class="callout callout-style-default callout-tip callout-titled" title="Do It Yourself Activity 1 · 10 minutes">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Do It Yourself Activity 1 · 10 minutes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Starting prompt:</strong> “Explain program evaluation.”</p>
+<ol type="1">
+<li>Rewrite the prompt using CLEAR for a first-year public health student.</li>
+<li>Ask an AI assistant both versions and compare the results.</li>
+<li>Identify two specific improvements and one remaining weakness.</li>
+<li>Follow up: “Explain one part more simply, using an example.”</li>
+</ol>
+<p><strong>Discuss:</strong> Which details made the biggest difference? What did you still need to verify?</p>
+</div>
+</div>
+<section id="useful-follow-up-prompts" class="level4" data-number="13.3.3.1">
+<h4 data-number="13.3.3.1" class="anchored" data-anchor-id="useful-follow-up-prompts"><span class="header-section-number">13.3.3.1</span> Useful follow-up prompts</h4>
+<blockquote class="blockquote">
+<p>“Explain this code one line at a time. Do not change the code yet.”</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>“Give me two alternative approaches and explain their tradeoffs.”</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>“What assumptions are you making? Which of them should I check?”</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>“Create a small test case so I can verify that this works.”</p>
+</blockquote>
+</section>
+</section>
+</section>
+<section id="train-your-ai-turn-repeated-prompts-into-a-skill" class="level2" data-number="13.4">
+<h2 data-number="13.4" class="anchored" data-anchor-id="train-your-ai-turn-repeated-prompts-into-a-skill"><span class="header-section-number">13.4</span> Train Your AI: Turn repeated prompts into a Skill</h2>
+<p>A <strong>Skill</strong> is a reusable set of instructions (and sometimes supporting files or scripts) that guides an AI assistant through a particular kind of task. Think of it as a short training manual for an assistant you expect to work with repeatedly.</p>
+<p>For example, instead of repeating your preferences every time you make an R graph, you can create a Skill that remembers the <em>workflow instructions</em> for graph design. Skill creation and availability vary by platform, account, and institution. In ChatGPT, available Skills can be explored at <code>/skills</code> where supported; Claude also offers skill-related workflows, though setup and features differ.</p>
+<section id="example-a-public-health-data-visualization-skill" class="level3" data-number="13.4.1">
+<h3 data-number="13.4.1" class="anchored" data-anchor-id="example-a-public-health-data-visualization-skill"><span class="header-section-number">13.4.1</span> Example: a Public Health Data Visualization Skill</h3>
+<div class="lesson-card">
+<p><strong>Our Skill should…</strong></p>
+<ul>
+<li>Use tidyverse pipelines and ggplot2.</li>
+<li>Default to <code>theme_classic(base_size = 15)</code>.</li>
+<li>Choose accessible colors and clearly label units.</li>
+<li>Explain unfamiliar code at a beginner level.</li>
+<li>Ask clarifying questions when analytical choices are unclear.</li>
+<li>Never fabricate data, estimates, results, or references.</li>
+<li>Suggest ways to check whether a graph represents the data honestly.</li>
+</ul>
+</div>
+</section>
+<section id="a-prompt-students-can-copy" class="level3" data-number="13.4.2">
+<h3 data-number="13.4.2" class="anchored" data-anchor-id="a-prompt-students-can-copy"><span class="header-section-number">13.4.2</span> A prompt students can copy</h3>
+<div class="callout callout-style-default callout-important callout-titled" title="Copy this prompt into ChatGPT or Claude">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Copy this prompt into ChatGPT or Claude
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Create a reusable Skill called <strong>Public Health Data Visualization</strong>.</p>
+<p>I am an undergraduate student learning R. I want help making accurate, readable, professional figures using tidyverse and ggplot2.</p>
+<p>Before creating the Skill, ask me a few questions about my coding experience, preferred graph style, and typical assignments.</p>
+<p>When helping me, explain unfamiliar commands, ask before making major analytical assumptions, suggest appropriate visualization options, and remind me to verify the results. Never invent data or statistical findings.</p>
+<p>Help me write the Skill instructions, then show me how to test and improve them. If my account does not support installing Skills, provide a reusable instruction document I can paste into future conversations.</p>
+</div>
+</div>
+</section>
+<section id="what-makes-a-skill-useful" class="level3" data-number="13.4.3">
+<h3 data-number="13.4.3" class="anchored" data-anchor-id="what-makes-a-skill-useful"><span class="header-section-number">13.4.3</span> What makes a Skill useful?</h3>
+<p>A useful Skill is <strong>specific</strong>, <strong>repeatable</strong>, and <strong>testable</strong>. “Be smart and helpful” is too vague. “For any ggplot2 request, explain changes in plain language and use a colorblind-friendly palette” is testable.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Do It Yourself Activity 2 · 15 minutes">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Do It Yourself Activity 2 · 15 minutes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Create the Skill above (or write a reusable instruction document if Skills are unavailable).</li>
+<li>Test it on a Gapminder graph of GDP per capita versus life expectancy.</li>
+<li>Test it on a different task, such as a bar chart of counts from <code>mtcars</code>.</li>
+<li>Identify one instruction the AI followed and one it missed.</li>
+<li>Revise the Skill and test again.</li>
+</ol>
+<p><strong>Submit:</strong> your Skill instructions, one test prompt, and one improvement you made after testing.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="always-verify-what-ai-produces" class="level2" data-number="13.5">
+<h2 data-number="13.5" class="anchored" data-anchor-id="always-verify-what-ai-produces"><span class="header-section-number">13.5</span> ALWAYS Verify what AI produces</h2>
+<p>AI-generated output can look correct even when it is wrong. Verification is not an optional final step—it is part of using AI competently.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>If AI helps with…</th>
+<th>You should verify…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>R code</td>
+<td>The code runs, uses the correct variables, and produces expected values.</td>
+</tr>
+<tr class="even">
+<td>Statistical interpretation</td>
+<td>The method, assumptions, denominators, estimates, and uncertainty.</td>
+</tr>
+<tr class="odd">
+<td>Literature review</td>
+<td>That every cited source exists and supports the claim.</td>
+</tr>
+<tr class="even">
+<td>Writing</td>
+<td>That the claims are accurate and the final wording reflects your ideas.</td>
+</tr>
+<tr class="odd">
+<td>Data visualization</td>
+<td>Axes, units, transformations, missing values, scales, and labels.</td>
+</tr>
+</tbody>
+</table>
+<section id="a-short-r-verification-exercise" class="level3" data-number="13.5.1">
+<h3 data-number="13.5.1" class="anchored" data-anchor-id="a-short-r-verification-exercise"><span class="header-section-number">13.5.1</span> A short R verification exercise</h3>
+<p>This example uses the built-in <code>mtcars</code> dataset. Students should calculate the answer themselves, then ask AI to explain the code and check the interpretation.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cyl) <span class="sc">%&gt;%</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_mpg =</span> <span class="fu">mean</span>(mpg),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+    cyl     n mean_mpg
+  &lt;dbl&gt; &lt;int&gt;    &lt;dbl&gt;
+1     4    11     26.7
+2     6     7     19.7
+3     8    14     15.1</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Do not confuse an explanation with verification">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Do not confuse an explanation with verification
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If an AI says the average fuel efficiency is 25 mpg, that does not make it true. Run the code and inspect the output. Ask yourself whether the grouping, units, and calculation match the question.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Do It Yourself Activity 3 · 15 minutes">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Do It Yourself Activity 3 · 15 minutes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ask AI to write a two-sentence interpretation of the <code>mtcars</code> summary above. Then:</p>
+<ol type="1">
+<li>Compare its numbers to the R output.</li>
+<li>Check whether it implies causation from descriptive data.</li>
+<li>Revise the interpretation to be precise and appropriately cautious.</li>
+<li>Explain which parts you verified independently.</li>
+</ol>
+</div>
+</div>
+</section>
+</section>
+<section id="disclose-ai-use-transparently" class="level2" data-number="13.6">
+<h2 data-number="13.6" class="anchored" data-anchor-id="disclose-ai-use-transparently"><span class="header-section-number">13.6</span> Disclose AI use transparently</h2>
+<p>Three practices matter, but they are <strong>not the same</strong>:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Practice</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Disclosure</strong></td>
+<td>State how AI contributed to your work.</td>
+</tr>
+<tr class="even">
+<td><strong>Citation</strong></td>
+<td>Identify an AI interaction or output when required by your assignment or style guide.</td>
+</tr>
+<tr class="odd">
+<td><strong>Verification</strong></td>
+<td>Independently confirm that AI-assisted work is accurate and appropriate.</td>
+</tr>
+</tbody>
+</table>
+<p>A disclosure is not a substitute for citing original research. A citation to AI is not evidence that a factual claim is correct. Always follow your course, university, and publication requirements.</p>
+<section id="a-practical-disclosure-template" class="level3" data-number="13.6.1">
+<h3 data-number="13.6.1" class="anchored" data-anchor-id="a-practical-disclosure-template"><span class="header-section-number">13.6.1</span> A practical disclosure template</h3>
+<div class="callout callout-style-default callout-note callout-titled" title="Example: AI use disclosure">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example: AI use disclosure
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>AI tool used:</strong> ChatGPT (OpenAI)</p>
+<p><strong>Purpose:</strong> I used AI to help develop R code for a scatterplot, troubleshoot an error, and improve graph formatting.</p>
+<p><strong>My contributions:</strong> I selected the variables, evaluated the visualization choices, ran the code, verified the output, and interpreted the findings.</p>
+<p><strong>Verification:</strong> I reviewed the code and confirmed that the graph accurately represents the dataset.</p>
+<p><strong>Date of use:</strong> [Insert date]</p>
+</div>
+</div>
+</section>
+<section id="different-levels-of-ai-involvement" class="level3" data-number="13.6.2">
+<h3 data-number="13.6.2" class="anchored" data-anchor-id="different-levels-of-ai-involvement"><span class="header-section-number">13.6.2</span> Different levels of AI involvement</h3>
+<p><strong>Example A — Brainstorming:</strong> “I used Claude to brainstorm potential research questions. I selected and revised the final question independently.”</p>
+<p><strong>Example B — Coding support:</strong> “I used ChatGPT to troubleshoot R syntax and suggest ggplot2 formatting changes. I executed and checked the final code.”</p>
+<p><strong>Example C — Editing:</strong> “I used an AI assistant to suggest improvements in grammar and clarity. The arguments and conclusions are my own.”</p>
+<p>These examples should be adapted to describe <strong>what actually happened</strong>, not copied automatically.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="Privacy and research ethics">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Privacy and research ethics
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Do not paste identifiable patient information, confidential research data, student records, unpublished sensitive material, or restricted institutional information into AI tools without authorization. Use de-identified, synthetic, or approved data when practicing.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="before-you-submit-an-ai-assisted-assignment" class="level2" data-number="13.7">
+<h2 data-number="13.7" class="anchored" data-anchor-id="before-you-submit-an-ai-assisted-assignment"><span class="header-section-number">13.7</span> Before you submit an AI-assisted assignment</h2>
+<ul>
+<li><p>Can I explain every important line of code and the interpretation of my results?</p></li>
+<li><p>Have I run the code, checked outputs against the data, and verified references independently?</p></li>
+<li><p>Did I follow course rules and avoid sharing private or restricted information?</p></li>
+<li><p>Does my disclosure accurately describe the tool’s role and my own contribution?</p></li>
+<li><p>Are the thoughts, concepts, and content mine? Or did I plagiarize the work of the AI (which is likely scraped from a website made by a human!)?</p></li>
+</ul>
+</section>
+<section id="what-do-you-think" class="level2" data-number="13.8">
+<h2 data-number="13.8" class="anchored" data-anchor-id="what-do-you-think"><span class="header-section-number">13.8</span> What do you think?</h2>
+<p>Take a minute to consider these three questions:</p>
+<ol type="1">
+<li>What is one task where AI can help you <strong><em>learn</em></strong> rather than simply <strong><em>finish</em></strong> faster?</li>
+<li>What is one claim or output you would never accept without independent verification?</li>
+<li>How will you explain and disclose AI’s contribution on your next assignment(s)?</li>
+</ol>
+<div class="takeaway">
+<p>AI should accelerate your work, not replace your understanding. If you cannot <strong>explain</strong> or <strong>defend</strong> the result, the work is <strong>not finished</strong>.</p>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/enelson56\.github\.io\/r-essentials-public-health\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/12_saving_plots.html" class="pagination-link" aria-label="Saving Plots &amp; Images">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Saving Plots &amp; Images</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/14_epi_curves.html" class="pagination-link" aria-label="Epidemic Curves and Confidence Intervals">
+        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Epidemic Curves and Confidence Intervals</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

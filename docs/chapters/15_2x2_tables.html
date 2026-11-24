@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>15&nbsp; 2×2 Tables and Measures of Association – **R Essentials for Public Health**</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/16_linear_regression.html" rel="next">
+<link href="../chapters/14_epi_curves.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-5630e6732664d48c7cde3b526013eeb9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles/custom.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/14_epi_curves.html"><strong>Part IV: Epidemiology Topics</strong></a></li><li class="breadcrumb-item"><a href="../chapters/15_2x2_tables.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">2×2 Tables and Measures of Association</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../"><strong>R Essentials for Public Health</strong></a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><strong>Welcome to R Essentials for Public Health!</strong></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>Part I: Getting Started</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01_getting_started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting Started with R and RStudio</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Workflow &amp; R Projects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03_terminology.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Basic R Terminology</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04_packages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">R Packages</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>Part II: Data Management</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05_importing_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Importing Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06_tidyverse_management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Tidyverse Data Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07_tidyverse_recoding_variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Factors: Recoding Variables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08_missing_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Missing Data in R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>Part III: Data Visualization</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/09_summary_tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Summary Tables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/10_ggplot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Plotting in R: ggplot2 Package</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/11_likert_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Likert Plots in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/12_saving_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Saving Plots &amp; Images</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/13_ai_integration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">AI Integration: Prompting, Skills, and Responsible Use</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>Part IV: Epidemiology Topics</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/14_epi_curves.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Epidemic Curves and Confidence Intervals</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/15_2x2_tables.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">2×2 Tables and Measures of Association</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/16_linear_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Introduction to Linear Regression in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/17_logistic_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Introduction to Logistic Regression in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/18_making_maps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Mapping Public Health Data in R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
+ <span class="menu-text">Practice Solutions</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03_terminology_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Chapter 6 Solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04_packages_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Chapter 7 Solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05_importing_data_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Chapter 8 Solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06_tidyverse_management_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Chapter 9 Solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07_tidyverse_recoding_variables_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Chapter 10 Solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/14_epi_curves_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Chapter 17 Solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/15_2x2_tables_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Chapter 18 Solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/16_linear_regression_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Chapter 16 Solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/17_logistic_regression_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Chapter 17 Solutions</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">15.1</span> Introduction</a></li>
+  <li><a href="#making-a-2x2-table-in-r-from-scratch" id="toc-making-a-2x2-table-in-r-from-scratch" class="nav-link" data-scroll-target="#making-a-2x2-table-in-r-from-scratch"><span class="header-section-number">15.2</span> Making a 2x2 Table in <code>R</code> from scratch</a></li>
+  <li><a href="#measures-of-association-with-epir" id="toc-measures-of-association-with-epir" class="nav-link" data-scroll-target="#measures-of-association-with-epir"><span class="header-section-number">15.3</span> Measures of Association with <code>epiR</code></a>
+  <ul class="collapse">
+  <li><a href="#cohort-studies" id="toc-cohort-studies" class="nav-link" data-scroll-target="#cohort-studies"><span class="header-section-number">15.3.1</span> Cohort Studies</a></li>
+  <li><a href="#case-control-studies" id="toc-case-control-studies" class="nav-link" data-scroll-target="#case-control-studies"><span class="header-section-number">15.3.2</span> Case-Control Studies</a></li>
+  <li><a href="#cross-sectional-studies" id="toc-cross-sectional-studies" class="nav-link" data-scroll-target="#cross-sectional-studies"><span class="header-section-number">15.3.3</span> Cross-Sectional Studies</a></li>
+  <li><a href="#diagnostic-testing-with-epir" id="toc-diagnostic-testing-with-epir" class="nav-link" data-scroll-target="#diagnostic-testing-with-epir"><span class="header-section-number">15.3.4</span> Diagnostic Testing with <code>epiR</code></a></li>
+  </ul></li>
+  <li><a href="#stratified-analysis-effect-modification-confounding" id="toc-stratified-analysis-effect-modification-confounding" class="nav-link" data-scroll-target="#stratified-analysis-effect-modification-confounding"><span class="header-section-number">15.4</span> Stratified Analysis: Effect Modification &amp; Confounding</a>
+  <ul class="collapse">
+  <li><a href="#age-hospitalizations-and-mrsa" id="toc-age-hospitalizations-and-mrsa" class="nav-link" data-scroll-target="#age-hospitalizations-and-mrsa"><span class="header-section-number">15.4.1</span> Age, hospitalizations, and MRSA</a></li>
+  </ul></li>
+  <li><a href="#measures-of-association-with-desctools" id="toc-measures-of-association-with-desctools" class="nav-link" data-scroll-target="#measures-of-association-with-desctools"><span class="header-section-number">15.5</span> Measures of Association with <code>DescTools</code></a></li>
+  <li><a href="#from-tables-to-line-listed-data" id="toc-from-tables-to-line-listed-data" class="nav-link" data-scroll-target="#from-tables-to-line-listed-data"><span class="header-section-number">15.6</span> From Tables to Line-Listed Data</a></li>
+  <li><a href="#your-turn-to-practice" id="toc-your-turn-to-practice" class="nav-link" data-scroll-target="#your-turn-to-practice"><span class="header-section-number">15.7</span> Your Turn to Practice</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/14_epi_curves.html"><strong>Part IV: Epidemiology Topics</strong></a></li><li class="breadcrumb-item"><a href="../chapters/15_2x2_tables.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">2×2 Tables and Measures of Association</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">2×2 Tables and Measures of Association</span></h1>
+<p class="subtitle lead">Risk, odds, diagnostic tests, and stratified comparisons</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="hero">
+<div class="kicker">
+<p>EXPOSURE &amp; OUTCOME · ASSOCIATION · STRATIFICATION</p>
+</div>
+<div class="hero-heading">
+<p>Four Cells, Powerful Questions</p>
+</div>
+<p>A simple 2×2 table can answer important questions about disease, exposure, and risk. Build tables in R, interpret measures of association, and explore how study design shapes the results.</p>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Learning objectives">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Learning objectives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>By the end of this lesson, you should be able to:</p>
+<ol type="1">
+<li>Build 2x2 tables in <code>R</code> and calculate measures of association (risk ratio, odds ratio, attributable risk, and diagnostic accuracy measures).</li>
+<li>Test for effect modification and confounding using stratified analysis.</li>
+</ol>
+</div>
+</div>
+<section id="introduction" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">15.1</span> Introduction</h2>
+<p>Well, we have been working with 2x2 Tables all semester. Might as well use <code>R</code> to show how we got all of our fancy calculations. In fact, we are going to mimic our new favorite website, <a href="https://openepi.com/TwobyTwo/TwobyTwo.htm">OpenEpi.com</a>! In order to get started, we are going to need to create a 2x2 Table. I am going to use some <code>base R</code> coding as this really is the fastest way to make a 2x2 Table. Keep in mind that you may have <strong>line listed data</strong>, which I will address a little further down the page.</p>
+</section>
+<section id="making-a-2x2-table-in-r-from-scratch" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="making-a-2x2-table-in-r-from-scratch"><span class="header-section-number">15.2</span> Making a 2x2 Table in <code>R</code> from scratch</h2>
+<p>Let’s suppose I want to recreate this table:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;"></th>
+<th style="text-align: center;">Diseased</th>
+<th style="text-align: center;">Not Diseased</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">Exposed</td>
+<td style="text-align: center;">84</td>
+<td style="text-align: center;">43</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">Unexposed</td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">92</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#---Input some data in classical 2x2 format---#</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#---- This is like Using Openepi.com </span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Option 1: Create table by ROWS</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">=</span> <span class="fu">as.table</span>(<span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">84</span>,<span class="dv">43</span>), <span class="fu">c</span>(<span class="dv">10</span>,<span class="dv">92</span>)))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>t1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   A  B
+A 84 43
+B 10 92</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Option 2: Create table by COLUMNS</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">=</span> <span class="fu">as.table</span>(<span class="fu">cbind</span>(<span class="fu">c</span>(<span class="dv">84</span>,<span class="dv">10</span>), <span class="fu">c</span>(<span class="dv">43</span>, <span class="dv">92</span>)))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>t2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   A  B
+A 84 43
+B 10 92</code></pre>
+</div>
+</div>
+<p>By default, this provides row and column names “A” and “B”, but those aren’t all that informative. Let’s give some names to our <code>table</code> object. We will do this by listing out the names we want for the <code>rows</code>, then the <code>columns</code>. We do this by using the <code>dimnames()</code> function - which will give names to the “dimensions” of the object.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#--- Let's add some names to our table object</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#--- Syntax: dimnames(object) &lt;- list(row_names, column_names)</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(t1) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">Exposure_Status =</span> <span class="fu">c</span>(<span class="st">"Exposed"</span>, <span class="st">"Unexposed"</span>),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">Disease_Status =</span> <span class="fu">c</span>(<span class="st">"Diseased"</span>, <span class="st">"Not Diseased"</span>))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>t1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               Disease_Status
+Exposure_Status Diseased Not Diseased
+      Exposed         84           43
+      Unexposed       10           92</code></pre>
+</div>
+</div>
+<p>Let’s also provide the marginal (total) values for our <code>t1</code> table. This is done with the <code>addmargins()</code> function. It will add a row and column of totals to your table.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#--- Let's also add some row/column totals</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">addmargins</span>(t1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               Disease_Status
+Exposure_Status Diseased Not Diseased Sum
+      Exposed         84           43 127
+      Unexposed       10           92 102
+      Sum             94          135 229</code></pre>
+</div>
+</div>
+</section>
+<section id="measures-of-association-with-epir" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="measures-of-association-with-epir"><span class="header-section-number">15.3</span> Measures of Association with <code>epiR</code></h2>
+<p>Let’s calculate some basic measures. We could do this by hand, but that doesn’t seem like the best use of our time. We can mimic what <a href="https://openepi.com/Menu/OE_Menu.htm" target="_blank">OpenEpi.com</a> does using a variety of <code>R packages</code>. If you want to know more options, you can go the <a href="https://cran.r-project.org/web/views/Epidemiology.html" target="_blank">CRAN TaskView for Epidemiology</a>. I will showcase the <code>epiR</code> and <code>DescTools</code> packages.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Choose Wisely">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Choose Wisely
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Risk ratios, odds ratios, and diagnostic accuracy measures answer different questions. Check the study design, the denominators, and the orientation of the 2×2 table before choosing or interpreting a measure. For a cohort table, a <strong>risk ratio</strong> compares risk among exposed and unexposed groups. For a case-control table, the <strong>odds ratio</strong> is usually the appropriate association measure. Always check the orientation of your rows and columns before interpreting results.</p>
+</div>
+</div>
+<p>The <code>epiR</code> package operates just like <a href="https://openepi.com/Menu/OE_Menu.htm" target="_blank">OpenEpi.com</a>. If you want more details, you can go <a href="https://cran.r-project.org/web/packages/epiR/epiR.pdf" target="_blank">here</a>. You will need to specify the <code>method</code> in the <code>epi.2by2</code> function (meaning choose your study design) and it will select which output to show you. This is to help you to remember to not use some of these measures based on your study design selection. Let’s look at this output and then compare it to <a href="https://openepi.com/Menu/OE_Menu.htm" target="_blank">OpenEpi.com</a>.</p>
+<section id="cohort-studies" class="level3" data-number="15.3.1">
+<h3 data-number="15.3.1" class="anchored" data-anchor-id="cohort-studies"><span class="header-section-number">15.3.1</span> Cohort Studies</h3>
+<p>Here is output for a Cohort (or Experimental) Study. Note that <code>method="cohort.count"</code>. <br> <strong>Note:</strong> The <code>epiR</code> package will provide interpretations of these values for you if you include the <code>interpret=TRUE</code> argument.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(epiR)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">epi.2by2</span>(t1, <span class="co">#this is your table object </span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">method=</span><span class="st">"cohort.count"</span>, <span class="co">#study design choice (cohort study here)</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">digits=</span><span class="dv">2</span>, <span class="co"># number of digits to round</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">conf.level=</span><span class="fl">0.95</span>, <span class="co"># confidence level (here it is 95%)</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">units=</span><span class="dv">100</span>, <span class="co"># multiplier for prevalence incidence (here it is per 100)</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">interpret =</span> <span class="cn">TRUE</span>, <span class="co"># add descriptive interpretations (switch to T/F)</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">outcome=</span> <span class="st">"as.columns"</span>)  <span class="co">#states that 2x2 has outcomes in columns</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Outcome+    Outcome-      Total                 Inc risk *
+Exposure+          84          43        127     66.14 (57.21 to 74.30)
+Exposure-          10          92        102       9.80 (4.80 to 17.29)
+Total              94         135        229     41.05 (34.61 to 47.72)
+
+Point estimates and 95% CIs:
+-------------------------------------------------------------------
+Inc risk ratio                                 6.75 (3.70, 12.31)
+Inc odds ratio                                 17.97 (8.50, 38.01)
+Attrib risk in the exposed *                   56.34 (46.29, 66.39)
+Attrib fraction in the exposed (%)            85.18 (73.73, 91.91)
+Attrib risk in the population *                31.24 (22.65, 39.84)
+Attrib fraction in the population (%)         76.12 (63.76, 86.13)
+E-value                                        12.97 (6.85, NA)
+-------------------------------------------------------------------
+Uncorrected chi2 test that OR = 1: chi2(1) = 74.196 Pr&gt;chi2 = &lt;0.001
+Fisher exact test that OR = 1: Pr&gt;chi2 = &lt;0.001
+Wald confidence limits
+CI: confidence interval
+* Outcomes per 100 population units 
+
+ Measures of association strength:
+ The incidence risk of the outcome among those that were exposure positive was 6.75 (95% CI 3.7 to 12.31) times the incidence risk of the outcome among those that were exposure negative. The incidence odds of the outcome among those that were exposure positive was 17.97 (95% CI 8.5 to 38.01) times the incidence odds of the outcome among those that were exposure negative. 
+
+ Measures of effect in the exposed:
+ Exposure to exposure changed the incidence risk of the outcome among those that were exposure positive by +56.34 (95% CI +46.29 to +66.39) per 100 population units. Among those that were exposure positive 85% (95% CI 74% to 92%) of the outcome cases were attributable to exposure. 
+
+ Number needed to treat:
+ Exposure to exposure changed the incidence risk of the outcome among those that were exposure positive by +56.34 (95% CI +46.29 to +66.39) per 100 population units. The number needed to expose to exposure to increase the outcome frequency by one was 1.78 (95% CI 1.51 to 2.16). 
+
+ Measures of effect in the population:
+ Exposure to exposure changed the incidence risk of the outcome among those that were exposure positive and exposure negative by +31.24 (95% CI +22.65 to +39.84) per 100 population units. Among those that were exposure positive and exposure negative 76% (95% CI 64% to 86%) of the outcome cases were attributable to exposure. 
+
+ E-value:
+ An unmeasured confounder in this study would need to be associated with both exposure and the outcome by a risk ratio of at least 12.97 (each) to completely account for the observed odds ratio of 17.97. </code></pre>
+</div>
+</div>
+<p><strong>How does this compare to OpenEpi.com?</strong></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/openepi_RR.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="800"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="case-control-studies" class="level3" data-number="15.3.2">
+<h3 data-number="15.3.2" class="anchored" data-anchor-id="case-control-studies"><span class="header-section-number">15.3.2</span> Case-Control Studies</h3>
+<p>Here is output for a Case-Control Study. Note that <code>method="case.control"</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#---Case-Control Study</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">epi.2by2</span>(t1, <span class="at">method=</span><span class="st">"case.control"</span>, <span class="at">digits=</span><span class="dv">2</span>, <span class="at">conf.level=</span><span class="fl">0.95</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">units=</span><span class="dv">100</span>, <span class="at">interpret =</span> F, <span class="at">outcome=</span> <span class="st">"as.columns"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Outcome+    Outcome-      Total                 Odds
+Exposed +          84          43        127  1.95 (1.35 to 2.85)
+Exposed -          10          92        102  0.11 (0.05 to 0.19)
+Total              94         135        229  0.70 (0.54 to 0.91)
+
+Point estimates and 95% CIs:
+-------------------------------------------------------------------
+Exposure odds ratio                            17.97 (8.50, 38.01)
+Attrib fraction (est) in the exposed (%)      94.44 (88.34, 97.34)
+Attrib fraction (est) in the population (%)   84.39 (79.52, 90.40)
+E-value                                        7.95 (5.28, NA)
+-------------------------------------------------------------------
+Uncorrected chi2 test that OR = 1: chi2(1) = 74.196 Pr&gt;chi2 = &lt;0.001
+Fisher exact test that OR = 1: Pr&gt;chi2 = &lt;0.001
+Wald confidence limits
+CI: confidence interval </code></pre>
+</div>
+</div>
+<p><strong>How does this compare to OpenEpi.com?</strong></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/openepi_OR.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="926"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="cross-sectional-studies" class="level3" data-number="15.3.3">
+<h3 data-number="15.3.3" class="anchored" data-anchor-id="cross-sectional-studies"><span class="header-section-number">15.3.3</span> Cross-Sectional Studies</h3>
+<p>Here is output for a Cross-Sectional Study. Note that <code>method="cross.sectional"</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#---Cross-Sectional Study</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">epi.2by2</span>(t1, <span class="at">method=</span><span class="st">"cross.sectional"</span>, <span class="at">digits=</span><span class="dv">2</span>, <span class="at">conf.level=</span><span class="fl">0.95</span>,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">units=</span><span class="dv">100</span>, <span class="at">interpret =</span> F, <span class="at">outcome=</span> <span class="st">"as.columns"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Outcome+ Outcome- Total               Prev risk *
+Exposure+       84       43   127    66.14 (57.21 to 74.30)
+Exposure-       10       92   102      9.80 (4.80 to 17.29)
+Total           94      135   229    41.05 (34.61 to 47.72)
+
+Point estimates and 95% CIs:
+-------------------------------------------------------------------
+Prev risk ratio                                6.75 (3.70, 12.31)
+Prev odds ratio                                17.97 (8.50, 38.01)
+Attrib prev in the exposed *                   56.34 (46.29, 66.39)
+Attrib fraction in the exposed (%)            85.18 (73.73, 91.91)
+Attrib prev in the population *                31.24 (22.65, 39.84)
+Attrib fraction in the population (%)         76.12 (63.76, 86.13)
+E-value                                        12.97 (6.85, NA)
+-------------------------------------------------------------------
+Uncorrected chi2 test that OR = 1: chi2(1) = 74.196 Pr&gt;chi2 = &lt;0.001
+Fisher exact test that OR = 1: Pr&gt;chi2 = &lt;0.001
+Wald confidence limits
+CI: confidence interval
+* Outcomes per 100 population units </code></pre>
+</div>
+</div>
+</section>
+<section id="diagnostic-testing-with-epir" class="level3" data-number="15.3.4">
+<h3 data-number="15.3.4" class="anchored" data-anchor-id="diagnostic-testing-with-epir"><span class="header-section-number">15.3.4</span> Diagnostic Testing with <code>epiR</code></h3>
+<p>Remember our friends <strong>sensitivity</strong>, <strong>specificity</strong>, <strong>positive predictive value</strong>, and <strong>negative predictive value</strong>?</p>
+<p><em>You don’t? Some friend you are…</em></p>
+<p>We can use the <code>epiR</code> package to calculate all of the diagnostic values for us! For more info, click <a href="https://search.r-project.org/CRAN/refmans/epiR/html/epi.tests.html" target="_blank">here</a></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#---Diagnostic Testing---#</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">epi.tests</span>(t1, <span class="at">conf.level =</span> <span class="fl">0.95</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Outcome +    Outcome -      Total
+Test +           84           43        127
+Test -           10           92        102
+Total            94          135        229
+
+Point estimates and 95% CIs:
+--------------------------------------------------------------
+Apparent prevalence *                  0.55 (0.49, 0.62)
+True prevalence *                      0.41 (0.35, 0.48)
+Sensitivity *                          0.89 (0.81, 0.95)
+Specificity *                          0.68 (0.60, 0.76)
+Positive predictive value *            0.66 (0.57, 0.74)
+Negative predictive value *            0.90 (0.83, 0.95)
+Positive likelihood ratio              2.81 (2.17, 3.63)
+Negative likelihood ratio              0.16 (0.09, 0.28)
+False T+ proportion for true D- *      0.32 (0.24, 0.40)
+False T- proportion for true D+ *      0.11 (0.05, 0.19)
+False T+ proportion for T+ *           0.34 (0.26, 0.43)
+False T- proportion for T- *           0.10 (0.05, 0.17)
+Correctly classified proportion *      0.77 (0.71, 0.82)
+--------------------------------------------------------------
+* Exact CIs</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="stratified-analysis-effect-modification-confounding" class="level2" data-number="15.4">
+<h2 data-number="15.4" class="anchored" data-anchor-id="stratified-analysis-effect-modification-confounding"><span class="header-section-number">15.4</span> Stratified Analysis: Effect Modification &amp; Confounding</h2>
+<p>We can also use classical 2×2 tables to investigate <strong>effect modification</strong> (EM) and <strong>confounding</strong>. We will compare stratum-specific measures of association and then examine the crude and adjusted estimates. Remember that differences across strata can suggest EM. When stratum-specific estimates are reasonably similar, a meaningful change from the crude to the adjusted estimate may suggest confounding. These comparisons require epidemiologic judgment, not just a single test.</p>
+<section id="age-hospitalizations-and-mrsa" class="level3" data-number="15.4.1">
+<h3 data-number="15.4.1" class="anchored" data-anchor-id="age-hospitalizations-and-mrsa"><span class="header-section-number">15.4.1</span> Age, hospitalizations, and MRSA</h3>
+<p>Let’s use an example with MRSA. Suppose you want to explore whether age modifies or confounds the association between previous hospitalization and MRSA. We can stratify the data by age and create two 2×2 tables.</p>
+<p><strong>Young Age (&lt; 55 yrs)</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;"></th>
+<th style="text-align: center;">MRSA</th>
+<th style="text-align: center;">No MRSA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">Prev. Hosp.</td>
+<td style="text-align: center;">1097</td>
+<td style="text-align: center;">828</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">No Prev. Hosp.</td>
+<td style="text-align: center;">881</td>
+<td style="text-align: center;">602</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Old Age (&gt;= 55 yrs)</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;"></th>
+<th style="text-align: center;">MRSA</th>
+<th style="text-align: center;">No MRSA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">Prev. Hosp.</td>
+<td style="text-align: center;">1854</td>
+<td style="text-align: center;">420</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">No Prev. Hosp.</td>
+<td style="text-align: center;">368</td>
+<td style="text-align: center;">568</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Our strategy is simple: make <strong>two</strong> 2×2 tables, <strong>combine</strong> them, and ask <code>epiR</code> to analyze the strata together.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled" title="Read this as...">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Read this as…
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>array()</code> function combines our two 2×2 tables into a single object. The <code>dim = c(2, 2, 2)</code> argument tells R that we have <strong>two rows, two columns, and two strata</strong>. Here, the first stratum is younger participants and the second is older participants. You do not need to learn arrays in depth to use this one command.</p>
+<p>In each 2×2 table, the <strong>rows</strong> represent previous hospitalization (yes, no) and the <strong>columns</strong> represent MRSA (yes, no). Keep this ordering consistent across both strata.</p>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#---Effect Modification or Confounding by Age?---#</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Young age (&lt;55 years)</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">&lt;-</span> <span class="fu">as.table</span>(<span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">1097</span>, <span class="dv">828</span>), <span class="fu">c</span>(<span class="dv">881</span>, <span class="dv">602</span>)))</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Older age (55+ years)</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>s2 <span class="ot">&lt;-</span> <span class="fu">as.table</span>(<span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">1854</span>, <span class="dv">420</span>), <span class="fu">c</span>(<span class="dv">368</span>, <span class="dv">568</span>)))</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine the two 2x2 tables into one stratified table</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>age_tab <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="fu">c</span>(s1, s2), <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co"># stratum-specific estimates</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="fu">epi.2by2</span>(s1, <span class="at">method =</span> <span class="st">"cohort.count"</span>,</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">outcome =</span> <span class="st">"as.columns"</span>, <span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Outcome+    Outcome-      Total                 Inc risk *
+Exposure+        1097         828       1925     56.99 (54.74 to 59.21)
+Exposure-         881         602       1483     59.41 (56.86 to 61.92)
+Total            1978        1430       3408     58.04 (56.36 to 59.70)
+
+Point estimates and 95% CIs:
+-------------------------------------------------------------------
+Inc risk ratio                                 0.96 (0.91, 1.02)
+Inc odds ratio                                 0.91 (0.79, 1.04)
+Attrib risk in the exposed *                   -2.42 (-5.76, 0.92)
+Attrib fraction in the exposed (%)            -4.25 (-10.36, 1.58)
+Attrib risk in the population *                -1.37 (-4.37, 1.63)
+Attrib fraction in the population (%)         -2.35 (-3.71, -0.88)
+E-value                                        1.25 (NA, 1.00)
+-------------------------------------------------------------------
+Uncorrected chi2 test that OR = 1: chi2(1) = 2.014 Pr&gt;chi2 = 0.156
+Fisher exact test that OR = 1: Pr&gt;chi2 = 0.161
+Wald confidence limits
+CI: confidence interval
+* Outcomes per 100 population units </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">epi.2by2</span>(s2, <span class="at">method =</span> <span class="st">"cohort.count"</span>,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">outcome =</span> <span class="st">"as.columns"</span>, <span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Outcome+    Outcome-      Total                 Inc risk *
+Exposure+        1854         420       2274     81.53 (79.87 to 83.11)
+Exposure-         368         568        936     39.32 (36.17 to 42.53)
+Total            2222         988       3210     69.22 (67.59 to 70.82)
+
+Point estimates and 95% CIs:
+-------------------------------------------------------------------
+Inc risk ratio                                 2.07 (1.91, 2.25)
+Inc odds ratio                                 6.81 (5.76, 8.06)
+Attrib risk in the exposed *                   42.21 (38.70, 45.73)
+Attrib fraction in the exposed (%)            51.78 (47.76, 55.65)
+Attrib risk in the population *                29.90 (26.39, 33.42)
+Attrib fraction in the population (%)         43.20 (39.94, 46.49)
+E-value                                        3.57 (3.23, NA)
+-------------------------------------------------------------------
+Uncorrected chi2 test that OR = 1: chi2(1) = 554.607 Pr&gt;chi2 = &lt;0.001
+Fisher exact test that OR = 1: Pr&gt;chi2 = &lt;0.001
+Wald confidence limits
+CI: confidence interval
+* Outcomes per 100 population units </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Analyze the strata together</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">epi.2by2</span>(age_tab, <span class="at">method =</span> <span class="st">"cohort.count"</span>,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">outcome =</span> <span class="st">"as.columns"</span>, <span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Outcome+    Outcome-      Total                 Inc risk *
+Exposure+        2951        1248       4199     70.28 (68.87 to 71.66)
+Exposure-        1249        1170       2419     51.63 (49.62 to 53.64)
+Total            4200        2418       6618     63.46 (62.29 to 64.62)
+
+
+Point estimates and 95% CIs:
+-------------------------------------------------------------------
+Inc risk ratio (crude)                         1.36 (1.30, 1.42)
+Inc risk ratio (M-H)                           1.34 (1.28, 1.41)
+Inc risk ratio (crude:M-H)                     1.01
+Inc odds ratio (crude)                         2.22 (2.00, 2.46)
+Inc odds ratio (M-H)                           1.99 (1.80, 2.20)
+Inc odds ratio (crude:M-H)                     1.11
+Attrib risk in the exposed (crude) *           18.65 (16.22, 21.07)
+Attrib risk in the exposed (M-H) *             17.30 (14.88, 19.72)
+Attrib risk (crude:M-H)                        1.08
+E-value (crude)                                2.06 (1.93, NA)
+E-value (M-H)                                  2.02 (1.88, NA)
+-------------------------------------------------------------------
+M-H test of homogeneity of IRRs: chi2(1) = 228.452 Pr&gt;chi2 = &lt;0.001
+M-H test of homogeneity of ORs: chi2(1) = 330.641 Pr&gt;chi2 = &lt;0.001
+Test that M-H adjusted OR = 1:  chi2(1) = 195.190 Pr&gt;chi2 = &lt;0.001
+Wald confidence limits
+M-H: Mantel-Haenszel; CI: confidence interval
+* Outcomes per 100 population units </code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Interpreting the stratified results">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Interpreting the stratified results
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>Check for effect modification:</strong> Compare the RR (or OR) acrossstrata. Are the estimates meaningfully different? A homogeneity test, where available, can supplement this comparison, but a nonsignificant result does not prove that EM is absent.</li>
+<li><strong>Check for confounding:</strong> If the stratum-specific estimates are reasonably similar, compare the crude estimate with the Mantel–Haenszel adjusted estimate <strong>of the same measure</strong>. A meaningful change suggests possible confounding. A 10% change is sometimes used as a guideline, not a definitive rule.</li>
+<li><strong>Decide what to report:</strong> If there is important EM, report the stratum-specific measures. If adjustment is appropriate, report the adjusted estimate and explain why.</li>
+</ol>
+</div>
+</div>
+<p><strong>EM or Confounding by Age? Example Write-Up</strong> <br> <em>The results suggest that age is an effect modifier of the relationship between previous hospitalization and MRSA infection.</em></p>
+<p><em>Among younger individuals (under 55 years), previous hospitalization was associated with approximately the same risk of MRSA infection as no previous hospitalization (RR ≈ 0.96). However, among older individuals (55 years and older), those with a previous hospitalization had approximately 2.07 times the risk of MRSA infection compared with those without a previous hospitalization.</em></p>
+<p><em>These findings suggest that the relationship between previous hospitalization and MRSA infection differs substantially by age. Because the stratum-specific risk ratios are meaningfully different, we have evidence of effect modification. Rather than reporting a single overall risk ratio, we should report the age-specific estimates to accurately describe this relationship.</em></p>
+</section>
+</section>
+<section id="measures-of-association-with-desctools" class="level2" data-number="15.5">
+<h2 data-number="15.5" class="anchored" data-anchor-id="measures-of-association-with-desctools"><span class="header-section-number">15.5</span> Measures of Association with <code>DescTools</code></h2>
+<p>For this to work, you have to feed these functions a <code>table</code> object (or <code>matrix</code>). You will notice these appear as “Values” in your <code>R Environment</code> and not as <code>data.frame</code> objects. So keep <code>t1</code> (or <code>t2</code>) from above as a <code>table</code> object. For more information on contingency-table methods in <code>DescTools</code>, see <a href="https://cran.r-project.org/web/packages/DescTools/vignettes/TablesInR.pdf">this vignette</a>.</p>
+<p><strong>Odds Ratios</strong></p>
+<p>Let’s start with the odds ratio (OR). In <code>DescTools</code>, this is done with the <code>OddsRatio()</code> function. We will need to specify our <code>table</code> object and the <code>confidence level</code> we want to calculate (almost always it is 95%).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("DescTools")</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DescTools)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co">#---Odds Ratio: OddsRatio() ---#</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">OddsRatio</span>(t1, <span class="at">conf.level =</span> <span class="fl">0.95</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>odds ratio     lwr.ci     upr.ci 
+ 17.972093   8.498092  38.008076 </code></pre>
+</div>
+</div>
+<p><strong>Relative Risk</strong></p>
+<p>We will also calculate the risk ratio or relative risk (RR). In <code>DescTools</code>, this is done with the <code>RelRisk()</code> function. Just like the <code>OddsRatio()</code> function, we supply it with a <code>table</code> object and the <code>confidence level</code> we seek.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">#---Relative Risk: RelRisk() ---#</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">RelRisk</span>(t1, <span class="at">conf.level =</span> <span class="fl">0.95</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>rel. risk    lwr.ci    upr.ci 
+ 6.746457  3.806903 12.362369 </code></pre>
+</div>
+</div>
+<p>The <code>DescTools</code> package has some quick plotting capabilities, which can help you visualize your table quickly. I will show you two ways:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">PlotMosaic</span>(t1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="15_2x2_tables_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">PlotCirc</span>(t1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="15_2x2_tables_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>You can also call an exhaustive list of measures using the <code>Desc()</code> function for <code>DescTools</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Desc</span>(t1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>────────────────────────────────────────────────────────────────────────────── 
+t1 (table)
+
+Summary: 
+n: 229, rows: 2, columns: 2
+
+Pearson's Chi-squared test (cont. adj):
+  X-squared = 71.886, df = 1, p-value &lt; 2.2e-16
+Fisher's exact test p-value &lt; 2.2e-16
+McNemar's chi-squared = 19.321, df = 1, p-value = 1.105e-05
+
+                    estimate lwr.ci upr.ci'
+                                          
+odds ratio            17.972  8.498 38.008
+rel. risk (col1)       6.746  3.696 12.313
+rel. risk (col2)       0.375  0.292  0.483
+prop. diff             0.563  0.454  0.656
+
+
+Contingency Coeff.     0.495
+Cramer's V             0.569
+Kendall Tau-b          0.569
+
+                                                                 
+                  Disease_Status   Diseased   Not Diseased    Sum
+Exposure_Status                                                  
+                                                                 
+Exposed           freq                   84             43    127
+                  perc                36.7%          18.8%  55.5%
+                  p.row               66.1%          33.9%      .
+                  p.col               89.4%          31.9%      .
+                                                                 
+Unexposed         freq                   10             92    102
+                  perc                 4.4%          40.2%  44.5%
+                  p.row                9.8%          90.2%      .
+                  p.col               10.6%          68.1%      .
+                                                                 
+Sum               freq                   94            135    229
+                  perc                41.0%          59.0% 100.0%
+                  p.row                   .              .      .
+                  p.col                   .              .      .
+                                                                 
+
+────────────────────
+' 95% conf. level</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="15_2x2_tables_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="from-tables-to-line-listed-data" class="level2" data-number="15.6">
+<h2 data-number="15.6" class="anchored" data-anchor-id="from-tables-to-line-listed-data"><span class="header-section-number">15.6</span> From Tables to Line-Listed Data</h2>
+<p>In the real world, we don’t have data summarized for us. We take a line-listing (think each row in the data equates to a person) dataset and then summarize it. We then use the summarized data to conduct our analysis.</p>
+<p>So let’s create a line-listed dataset from what we have above. Normally your data would already be in this format! I am just showing you that what you learned above (i.e., the classroom 2x2 table approach) translates to <strong>REAL</strong> data:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DescTools)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co">#---Effect Modification or Confounding by Age?---#</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Young age (&lt;55 years)</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">&lt;-</span> <span class="fu">as.table</span>(<span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">1097</span>, <span class="dv">828</span>), <span class="fu">c</span>(<span class="dv">881</span>, <span class="dv">602</span>)))</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Older age (55+ years)</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>s2 <span class="ot">&lt;-</span> <span class="fu">as.table</span>(<span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">1854</span>, <span class="dv">420</span>), <span class="fu">c</span>(<span class="dv">368</span>, <span class="dv">568</span>)))</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="co">#---Give some meaningful names</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(s1) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">Exposed =</span> <span class="fu">c</span>(<span class="st">"Yes"</span>, <span class="st">"No"</span>),</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>                     <span class="at">Diseased =</span> <span class="fu">c</span>(<span class="st">"Yes"</span>, <span class="st">"No"</span>))</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(s2) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">Exposed =</span> <span class="fu">c</span>(<span class="st">"Yes"</span>, <span class="st">"No"</span>),</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>                     <span class="at">Diseased =</span> <span class="fu">c</span>(<span class="st">"Yes"</span>, <span class="st">"No"</span>))</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a><span class="co">#---Creates a line listing of the tables</span></span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>listing_s1 <span class="ot">=</span> <span class="fu">Untable</span>(s1)</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>listing_s2 <span class="ot">=</span> <span class="fu">Untable</span>(s2)</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a><span class="co">#---View the data</span></span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(listing_s1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Exposed Diseased
+1     Yes      Yes
+2     Yes      Yes
+3     Yes      Yes
+4     Yes      Yes
+5     Yes      Yes
+6     Yes      Yes</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(listing_s2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Exposed Diseased
+1     Yes      Yes
+2     Yes      Yes
+3     Yes      Yes
+4     Yes      Yes
+5     Yes      Yes
+6     Yes      Yes</code></pre>
+</div>
+</div>
+<p>Now that I have some data that mimics your next internship, we will summarize the line-listed data into tables and use <code>epiR</code> again. Notice that this uses the same stratified approach as above.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># summarize the line-listed data</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>ls1 <span class="ot">&lt;-</span> <span class="fu">table</span>(listing_s1<span class="sc">$</span>Exposed, listing_s1<span class="sc">$</span>Diseased)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>ls2 <span class="ot">&lt;-</span> <span class="fu">table</span>(listing_s2<span class="sc">$</span>Exposed, listing_s2<span class="sc">$</span>Diseased)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine the two tables and analyze them</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>listing_tab <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="fu">c</span>(ls1, ls2), <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="fu">epi.2by2</span>(listing_tab, <span class="at">method =</span> <span class="st">"cohort.count"</span>,</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">outcome =</span> <span class="st">"as.columns"</span>, <span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Outcome+    Outcome-      Total                 Inc risk *
+Exposure+        2951        1248       4199     70.28 (68.87 to 71.66)
+Exposure-        1249        1170       2419     51.63 (49.62 to 53.64)
+Total            4200        2418       6618     63.46 (62.29 to 64.62)
+
+
+Point estimates and 95% CIs:
+-------------------------------------------------------------------
+Inc risk ratio (crude)                         1.36 (1.30, 1.42)
+Inc risk ratio (M-H)                           1.34 (1.28, 1.41)
+Inc risk ratio (crude:M-H)                     1.01
+Inc odds ratio (crude)                         2.22 (2.00, 2.46)
+Inc odds ratio (M-H)                           1.99 (1.80, 2.20)
+Inc odds ratio (crude:M-H)                     1.11
+Attrib risk in the exposed (crude) *           18.65 (16.22, 21.07)
+Attrib risk in the exposed (M-H) *             17.30 (14.88, 19.72)
+Attrib risk (crude:M-H)                        1.08
+E-value (crude)                                2.06 (1.93, NA)
+E-value (M-H)                                  2.02 (1.88, NA)
+-------------------------------------------------------------------
+M-H test of homogeneity of IRRs: chi2(1) = 228.452 Pr&gt;chi2 = &lt;0.001
+M-H test of homogeneity of ORs: chi2(1) = 330.641 Pr&gt;chi2 = &lt;0.001
+Test that M-H adjusted OR = 1:  chi2(1) = 195.190 Pr&gt;chi2 = &lt;0.001
+Wald confidence limits
+M-H: Mantel-Haenszel; CI: confidence interval
+* Outcomes per 100 population units </code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="From individual records to a stratified analysis">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>From individual records to a stratified analysis
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>table()</code> function counts the observations in each exposure/outcome combination. We then combine the two tables using the same <code>array()</code> command introduced above. The analysis is the same whether we started with published counts or a line-listed dataset.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Instructor check: antimicrobial-use counts">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Instructor check: antimicrobial-use counts
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The antimicrobial-use example above uses <strong>1,000</strong> for the final cell of the second stratum, as in the original analysis code. The practice table below uses <strong>1,888</strong> for that cell. Verify which value belongs in the teaching example before students compare the results.</p>
+</div>
+</div>
+</section>
+<section id="your-turn-to-practice" class="level2" data-number="15.7">
+<h2 data-number="15.7" class="anchored" data-anchor-id="your-turn-to-practice"><span class="header-section-number">15.7</span> Your Turn to Practice</h2>
+<p>Copy the tasks into an <code>R Script</code> and put your skills to the test.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co"># STRATIFIED ANALYSIS : STUDENT </span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Work through the tasks in order in your R Project.</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co"># You need to load the tidyverse package to complete the tasks.</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="co"># PART 1: BASIC 2x2 TABLE ANALYSIS -----------------------</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TASK</span><span class="co"> 0: Load the necessary libraries</span></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TASK</span><span class="co"> 1: Create a 2x2 table of these data</span></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a><span class="co">#  |           | Diseased | Not Diseased |</span></span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a><span class="co">#  |----------:|:--------:|:------------:|</span></span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a><span class="co">#  |   Exposed |    68    |      56      |</span></span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a><span class="co">#  | Unexposed |    22    |      91      |</span></span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TASK</span><span class="co"> 2: What is the RR for this 2x2 table? Is the RR statistically significant?</span></span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TASK</span><span class="co"> 4: What is the AR%? Is the AR% statistically significant?</span></span>
+<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TASK</span><span class="co"> 5: What is the OR from this same 2x2 table? Is it statistically significant? </span></span>
+<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a><span class="co"># PART 2: STRATIFIED ANALYSIS ----------------------------</span></span>
+<span id="cb37-26"><a href="#cb37-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-27"><a href="#cb37-27" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TASK</span><span class="co"> 6: Create stratified 2x2 tables and combine them:</span></span>
+<span id="cb37-28"><a href="#cb37-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-29"><a href="#cb37-29" aria-hidden="true" tabindex="-1"></a><span class="co">#  **Yes: Antimicrobial Use**</span></span>
+<span id="cb37-30"><a href="#cb37-30" aria-hidden="true" tabindex="-1"></a><span class="co">#  |                | MRSA | No MRSA |</span></span>
+<span id="cb37-31"><a href="#cb37-31" aria-hidden="true" tabindex="-1"></a><span class="co">#  |---------------:|:----:|:-------:|</span></span>
+<span id="cb37-32"><a href="#cb37-32" aria-hidden="true" tabindex="-1"></a><span class="co">#  |    Prev. Hosp. | 1426 |   349   |</span></span>
+<span id="cb37-33"><a href="#cb37-33" aria-hidden="true" tabindex="-1"></a><span class="co">#  | No Prev. Hosp. | 361  |   170   |</span></span>
+<span id="cb37-34"><a href="#cb37-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-35"><a href="#cb37-35" aria-hidden="true" tabindex="-1"></a><span class="co">#  **No: Antimicrobial Use**</span></span>
+<span id="cb37-36"><a href="#cb37-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-37"><a href="#cb37-37" aria-hidden="true" tabindex="-1"></a><span class="co">#  |                | MRSA | No MRSA |</span></span>
+<span id="cb37-38"><a href="#cb37-38" aria-hidden="true" tabindex="-1"></a><span class="co">#  |---------------:|:----:|:-------:|</span></span>
+<span id="cb37-39"><a href="#cb37-39" aria-hidden="true" tabindex="-1"></a><span class="co">#  |    Prev. Hosp. | 1525 |   899   |</span></span>
+<span id="cb37-40"><a href="#cb37-40" aria-hidden="true" tabindex="-1"></a><span class="co">#  | No Prev. Hosp. | 888  |  1888   |</span></span>
+<span id="cb37-41"><a href="#cb37-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-42"><a href="#cb37-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-43"><a href="#cb37-43" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TASK</span><span class="co"> 7: What is the RR for each stratum? Is it statistically significant?</span></span>
+<span id="cb37-44"><a href="#cb37-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-45"><a href="#cb37-45" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TASK</span><span class="co"> 8: Is there evidence of EM, Confounding, or Neither?</span></span>
+<span id="cb37-46"><a href="#cb37-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-47"><a href="#cb37-47" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TASK</span><span class="co"> 9: What would be the appropriate measure(s) to report?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/enelson56\.github\.io\/r-essentials-public-health\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/14_epi_curves.html" class="pagination-link" aria-label="Epidemic Curves and Confidence Intervals">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Epidemic Curves and Confidence Intervals</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/16_linear_regression.html" class="pagination-link" aria-label="Introduction to Linear Regression in R">
+        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Introduction to Linear Regression in R</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
