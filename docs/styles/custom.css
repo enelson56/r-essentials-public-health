@@ -1,0 +1,29 @@
+/* R Essentials for Public Health: shared HTML styles.
+   Color values are literal to avoid Quarto CSS-variable extraction issues. */
+
+body { line-height:1.65; }
+h1,h2,h3,h4 { color:#17365D; }
+h1 { border-bottom:2px solid #e4eaf0; padding-bottom:.35rem; }
+.lead {font-size:1.15rem; color:#3c5366; max-width:850px;}
+.hero {background:linear-gradient(115deg,#17365D,#246b80);color:white;padding:2rem 2.2rem;border-radius:14px;margin:1.2rem 0 2rem;}
+.hero h2,.hero p {color:white !important;margin-top:0;}
+.kicker {letter-spacing:.12em;text-transform:uppercase;font-weight:700;font-size:.76rem;color:#c8e9e7;}
+.pill {display:inline-block;background:#e8f3f3;color:#145e63;border-radius:30px;padding:.2rem .75rem;font-weight:700;font-size:.85rem;margin:.2rem .3rem .2rem 0;}
+.lesson-card {border:1px solid #d9e4e8;border-left:5px solid #167C80;padding:1rem 1.3rem;border-radius:9px;background:#fafcfd;margin:1rem 0;}
+.prompt-bad {border-left:5px solid #c96556;background:#fff5f3;padding:1rem 1.3rem;border-radius:8px;margin:1rem 0;}
+.prompt-good {border-left:5px solid #198177;background:#eef8f5;padding:1rem 1.3rem;border-radius:8px;margin:1rem 0;}
+.takeaway {background:#f3f6fa;border-left:5px solid #17365D;padding:1.1rem 1.4rem;border-radius:8px;margin:1.4rem 0;font-weight:600;}
+.timeline {display:grid;grid-template-columns:110px 1fr;gap:.6rem 1rem;margin:1.2rem 0;}
+.time {font-weight:800;color:#17365D;background:#eaf0f7;border-radius:7px;padding:.7rem;text-align:center;}
+.task {border-bottom:1px solid #e4e8ed;padding:.7rem 0;}
+.smallnote {font-size:.9rem;color:#5c6a75;}
+@media(max-width:650px){.timeline{grid-template-columns:1fr}.hero{padding:1.2rem}}
+
+/* Consistent instructional accents across book chapters */
+.callout.callout-tip { border-left-color: #167C80; }
+.callout.callout-note { border-left-color: #246b80; }
+.callout.callout-important { border-left-color: #D6A33A; }
+.callout.callout-warning { border-left-color: #c96556; }
+.callout-title-container { font-weight: 700; }
+.read-this-as { background: #eef8f5; border-left: 5px solid #167C80; padding: .85rem 1.15rem; border-radius: 8px; margin: 1rem 0; }
+.hero-heading {font-size:1.65rem;font-weight:750;line-height:1.25;color:white;margin:.2rem 0 .7rem;}
